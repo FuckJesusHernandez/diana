@@ -406,39 +406,62 @@
   }
 
   function iniciarSecuencia(){
-    // 1) El himno se dispara PRIMERO: así se queda con el "permiso" real
-    //    del gesto de clic del usuario (clave para que suene en iPhone).
+    mostrar(p2);
+    barra.style.transition = 'none';
+    barra.style.width = '0%';
+
+    let yaEmpezoElConteo = false;
+
+    function empezarConteoDe10s(){
+      if(yaEmpezoElConteo) return;
+      yaEmpezoElConteo = true;
+
+      // La barra y los 10 segundos empiezan AQUÍ, cuando el himno ya
+      // está sonando de verdad (no cuando se hizo clic), para que
+      // siempre se escuchen los 10 segundos completos aunque el audio
+      // haya tardado en cargar.
+      requestAnimationFrame(()=>{
+        barra.style.transition = `width ${DURACION_HIMNO_MS/1000}s linear`;
+        requestAnimationFrame(()=>{ barra.style.width = '100%'; });
+      });
+
+      setTimeout(()=>{
+        fundirAudio(himno, ()=>{
+          mostrar(p3);
+          lanzarConfeti();
+          setTimeout(()=>{
+            escenario.classList.add('fiesta');
+            mananitas.currentTime = 0;
+            mananitas.play().catch(err => console.log('Error mananitas final:', err));
+            mostrar(p4);
+            lanzarConfeti();
+          }, 1800);
+        });
+      }, DURACION_HIMNO_MS);
+
+      // Las mañanitas se precalientan DESPUÉS de que el himno ya está
+      // sonando, silenciadas, solo para poder reproducirlas más tarde
+      // sin que el navegador lo bloquee. Así ya no compite por ancho
+      // de banda con la carga del himno.
+      mananitas.volume = 0;
+      mananitas.play().then(()=>{
+        mananitas.pause();
+        mananitas.currentTime = 0;
+        mananitas.volume = 1;
+      }).catch(err => console.log('Error al precalentar mananitas:', err));
+    }
+
+    // El himno se dispara PRIMERO, dentro del clic, para quedarse con el
+    // permiso real del gesto del usuario (clave para que suene en iPhone).
     himno.currentTime = 0;
     himno.volume = 1;
+    himno.addEventListener('playing', empezarConteoDe10s, { once: true });
     himno.play().catch(err => console.log('Error al reproducir himno:', err));
 
-    // 2) Las mañanitas se "precalientan" DESPUÉS y silenciadas, solo para
-    //    poder reproducirlas más tarde (vía setTimeout) sin que el navegador
-    //    lo bloquee por falta de gesto del usuario en ese momento.
-    mananitas.volume = 0;
-    mananitas.play().then(()=>{
-      mananitas.pause();
-      mananitas.currentTime = 0;
-      mananitas.volume = 1;
-    }).catch(err => console.log('Error al precalentar mananitas:', err));
-
-    mostrar(p2);
-    barra.style.transition = `width ${DURACION_HIMNO_MS/1000}s linear`;
-    requestAnimationFrame(()=>{ barra.style.width = '100%'; });
-
-    setTimeout(()=>{
-      fundirAudio(himno, ()=>{
-        mostrar(p3);
-        lanzarConfeti();
-        setTimeout(()=>{
-          escenario.classList.add('fiesta');
-          mananitas.currentTime = 0;
-          mananitas.play().catch(err => console.log('Error mananitas final:', err));
-          mostrar(p4);
-          lanzarConfeti();
-        }, 1800);
-      });
-    }, DURACION_HIMNO_MS);
+    // Red de seguridad: si por alguna razón 'playing' nunca dispara
+    // (conexión muy mala, etc.), arranca el conteo igual a los 4s para
+    // que la página no se quede congelada en la pantalla 2.
+    setTimeout(empezarConteoDe10s, 4000);
   }
 
   document.getElementById('btnTocar').addEventListener('click', iniciarSecuencia);
