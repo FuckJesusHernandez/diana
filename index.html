@@ -353,7 +353,7 @@
   </div>
 </div>
 
-<audio id="audioHimno" preload="auto" src="https://archive.org/download/himnonacionalmexicanoversionesymarchas-orgullomexicano/02%20Himno%20Nacional%20Versi%C3%B3n%20Instrumental.mp3"></audio>
+<audio id="audioHimno" preload="auto" src="https://dn721206.ca.archive.org/0/items/himnonacionalmexicanoversionesymarchas-orgullomexicano/02%20Himno%20Nacional%20Versi%C3%B3n%20Instrumental.mp3"></audio>
 <audio id="audioMananitas" preload="auto" src="https://archive.org/download/12-los-tigres-del-norte-las-mananitas/03%20Alejandro%20Fernandez%20-%20Las%20Ma%C3%B1anitas.mp3"></audio>
 
 <script>
@@ -406,11 +406,21 @@
   }
 
   function iniciarSecuencia(){
-    mananitas.play().then(()=>{ mananitas.pause(); mananitas.currentTime = 0; }).catch(()=>{});
-
+    // 1) El himno se dispara PRIMERO: así se queda con el "permiso" real
+    //    del gesto de clic del usuario (clave para que suene en iPhone).
     himno.currentTime = 0;
     himno.volume = 1;
-    himno.play().catch(()=>{});
+    himno.play().catch(err => console.log('Error al reproducir himno:', err));
+
+    // 2) Las mañanitas se "precalientan" DESPUÉS y silenciadas, solo para
+    //    poder reproducirlas más tarde (vía setTimeout) sin que el navegador
+    //    lo bloquee por falta de gesto del usuario en ese momento.
+    mananitas.volume = 0;
+    mananitas.play().then(()=>{
+      mananitas.pause();
+      mananitas.currentTime = 0;
+      mananitas.volume = 1;
+    }).catch(err => console.log('Error al precalentar mananitas:', err));
 
     mostrar(p2);
     barra.style.transition = `width ${DURACION_HIMNO_MS/1000}s linear`;
@@ -423,7 +433,7 @@
         setTimeout(()=>{
           escenario.classList.add('fiesta');
           mananitas.currentTime = 0;
-          mananitas.play().catch(()=>{});
+          mananitas.play().catch(err => console.log('Error mananitas final:', err));
           mostrar(p4);
           lanzarConfeti();
         }, 1800);
