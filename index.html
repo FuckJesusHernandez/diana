@@ -51,7 +51,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow: hidden;
+    overflow-x: hidden;
     transition: background 1s ease;
     background:
       radial-gradient(circle at 12% 18%, rgba(255,46,136,0.28), transparent 42%),
@@ -72,7 +72,8 @@
 
   .pantalla{
     position: absolute;
-    inset: 0;
+    top: 0; left: 0; right: 0;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -291,7 +292,7 @@
       <div class="ticket">
         <span class="estrellita doodle" style="top:-18px; left:-10px; color: var(--lima); transform: rotate(-15deg);">✦</span>
         <span class="estrellita doodle" style="bottom:-14px; right:-12px; color: var(--cian); transform: rotate(10deg);">✦</span>
-        <div class="ticket-eyebrow">ADMISIÓN </div>
+        <div class="ticket-eyebrow">ADMISIÓN</div>
         <div class="ticket-titulo display">DIANA ARELY</div>
         <div class="ticket-linea"></div>
         <div class="ticket-detalle">
@@ -311,7 +312,7 @@
       <span class="nota n2">🎶</span>
       <div class="vinilo"><div class="vinilo-centro">SIDE A</div></div>
     </div>
-    <h2 class="himno-titulo display">suena algo raro</h2>
+    <h2 class="himno-titulo display">suena algo JAJAJA</h2>
     <p class="himno-sub doodle">aguanta, ya casi...</p>
     <div class="barra-tiempo"><div class="barra-tiempo-relleno" id="barra"></div></div>
   </div>
@@ -330,7 +331,7 @@
         <div class="polaroid-caption doodle">hoy es tu día</div>
       </div>
       <p class="edad display">21</p>
-      <h1 class="nombre display">Feliz cumpleaños,<br>Diana Arely</h1>
+      <h1 class="nombre display">Feliz cumpleaños,<br>Diana</h1>
       <p class="mensaje">
         Hoy cumples 21 y la verdad es que se siente justo celebrarte: no solo
         por llegar a esta edad, sino por la persona que eres llegando a ella.
@@ -353,7 +354,7 @@
 </div>
 
 <audio id="audioHimno" preload="auto" src="https://archive.org/download/himnonacionalmexicanoversionesymarchas-orgullomexicano/02%20Himno%20Nacional%20Versi%C3%B3n%20Instrumental.mp3"></audio>
-<audio id="audioMananitas" preload="auto" src="https://archive.org/download/MariachisPlayinglasMananitasInEastLosAngeles/MariachiMananitasEastLa.mp3"></audio>
+<audio id="audioMananitas" preload="auto" src="https://archive.org/download/12-los-tigres-del-norte-las-mananitas/03%20Alejandro%20Fernandez%20-%20Las%20Ma%C3%B1anitas.mp3"></audio>
 
 <script>
   const escenario = document.getElementById('escenario');
