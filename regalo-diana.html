@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Para Diana Arely 🎟️</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Permanent+Marker&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  /* ============================================================
+     EDITAR AQUÍ:
+     - Mensaje de cumpleaños: <p class="mensaje"> abajo.
+     - Audios: URLs en las etiquetas <audio> al fondo del archivo.
+     ============================================================ */
+
+  :root{
+    --tinta: #0d0d12;
+    --hueso: #fdfaf3;
+    --rosa: #ff2e88;
+    --lima: #d4ff3f;
+    --morado: #8b5cf6;
+    --cian: #2be0e0;
+  }
+
+  *{ box-sizing: border-box; }
+
+  html, body{
+    margin: 0;
+    min-height: 100%;
+    background: var(--tinta);
+    color: var(--hueso);
+    font-family: 'Space Grotesk', sans-serif;
+    overflow-x: hidden;
+  }
+
+  .display{ font-family: 'Anton', sans-serif; letter-spacing: 0.5px; text-transform: uppercase; }
+  .doodle{ font-family: 'Permanent Marker', cursive; }
+
+  body{
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .escenario{
+    width: 100%;
+    min-height: 100vh;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    transition: background 1s ease;
+    background:
+      radial-gradient(circle at 12% 18%, rgba(255,46,136,0.28), transparent 42%),
+      radial-gradient(circle at 88% 12%, rgba(139,92,246,0.28), transparent 40%),
+      radial-gradient(circle at 50% 92%, rgba(43,224,224,0.20), transparent 45%),
+      var(--tinta);
+  }
+
+  .escenario.fiesta{
+    background:
+      radial-gradient(circle at 15% 15%, rgba(255,46,136,0.35), transparent 45%),
+      radial-gradient(circle at 85% 20%, rgba(212,255,63,0.3), transparent 42%),
+      radial-gradient(circle at 50% 95%, rgba(139,92,246,0.35), transparent 48%),
+      var(--tinta);
+  }
+
+  .doodle-svg{ position: absolute; pointer-events: none; opacity: 0.85; }
+
+  .pantalla{
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 40px 22px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.6s ease;
+  }
+  .pantalla.activa{ opacity: 1; pointer-events: auto; }
+
+  /* ---------- pantalla 1: ticket ---------- */
+  .washi{
+    position: absolute;
+    width: 90px; height: 26px;
+    opacity: 0.85;
+    top: -13px;
+    left: 50%;
+    transform: translateX(-50%) rotate(-4deg);
+  }
+  .washi.rosa{ background: repeating-linear-gradient(45deg, var(--rosa) 0 6px, #ff85bb 6px 12px); }
+  .washi.cian{ background: repeating-linear-gradient(45deg, var(--cian) 0 6px, #9df3f3 6px 12px); }
+
+  .ticket{
+    background: var(--hueso);
+    color: var(--tinta);
+    width: 290px;
+    max-width: 84vw;
+    padding: 30px 20px 24px;
+    position: relative;
+    box-shadow: 8px 10px 0 var(--morado);
+    transform: rotate(-1.5deg);
+  }
+  .ticket-eyebrow{ font-size: 10.5px; letter-spacing: 2px; opacity: 0.55; font-weight: 700; }
+  .ticket-titulo{ font-size: clamp(32px, 9vw, 42px); margin: 6px 0; line-height: 0.9; color: var(--rosa); }
+  .ticket-linea{ border-top: 2px dashed rgba(20,20,20,0.2); margin: 14px 0; }
+  .ticket-detalle{ font-size: 10.5px; display: flex; justify-content: space-between; opacity: 0.65; }
+  .estrellita{ position: absolute; font-size: 22px; }
+
+  button.tocar{
+    margin-top: 32px;
+    background: var(--lima);
+    color: var(--tinta);
+    border: none;
+    padding: 15px 30px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    box-shadow: 5px 5px 0 var(--rosa);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  button.tocar:hover{ transform: translate(-2px,-2px); box-shadow: 7px 7px 0 var(--rosa); }
+  button.tocar:active{ transform: translate(0,0); box-shadow: 2px 2px 0 var(--rosa); }
+
+  .portada-sub{ font-size: 12px; opacity: 0.6; margin-top: 16px; max-width: 260px; }
+
+  /* ---------- pantalla 2: himno / vinilo ---------- */
+  .vinilo-wrap{ position: relative; margin-bottom: 26px; }
+  .vinilo{
+    width: 150px; height: 150px;
+    border-radius: 50%;
+    background: repeating-radial-gradient(circle, #0a0a0a 0 3px, #1c1c1c 3px 6px);
+    border: 3px solid #2a2a2a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: girar 3s linear infinite;
+    box-shadow: 0 0 40px rgba(255,46,136,0.25);
+  }
+  @keyframes girar{ to{ transform: rotate(360deg); } }
+  .vinilo-centro{
+    width: 46px; height: 46px;
+    border-radius: 50%;
+    background: var(--rosa);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 9px; color: var(--tinta); font-weight: 700;
+  }
+  .nota{ position: absolute; font-size: 26px; animation: flotar 2.2s ease-in-out infinite; }
+  .nota.n1{ top: -10px; right: -14px; animation-delay: 0s; }
+  .nota.n2{ bottom: 10px; left: -20px; animation-delay: 0.6s; }
+  @keyframes flotar{ 0%,100%{ transform: translateY(0); } 50%{ transform: translateY(-10px); } }
+
+  h2.himno-titulo{
+    font-size: clamp(24px, 6vw, 32px);
+    margin: 0 0 6px;
+    color: var(--cian);
+  }
+  .himno-sub{ font-size: 12px; opacity: 0.55; margin-bottom: 22px; }
+
+  .barra-tiempo{
+    width: 220px;
+    height: 7px;
+    background: rgba(255,255,255,0.12);
+    overflow: hidden;
+    border-radius: 4px;
+  }
+  .barra-tiempo-relleno{
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--rosa), var(--morado));
+    transition: width linear;
+  }
+
+  /* ---------- pantalla 3: la broma ---------- */
+  .sticker{
+    display: inline-block;
+    background: var(--lima);
+    color: var(--tinta);
+    padding: 16px 28px;
+    font-size: clamp(34px, 10vw, 58px);
+    transform: rotate(-5deg) scale(0.5);
+    opacity: 0;
+    box-shadow: 7px 7px 0 var(--rosa);
+    animation: golpe 0.5s cubic-bezier(.2,1.6,.4,1) forwards;
+  }
+  @keyframes golpe{ to{ transform: rotate(-5deg) scale(1); opacity: 1; } }
+  .broma-sub{ margin-top: 22px; font-size: 13px; opacity: 0.7; }
+
+  /* ---------- pantalla 4: cumpleaños ---------- */
+  .cartel{
+    width: 100%;
+    max-width: 380px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .polaroid{
+    background: var(--hueso);
+    padding: 10px 10px 34px;
+    width: 130px;
+    transform: rotate(3deg);
+    box-shadow: 0 10px 24px rgba(0,0,0,0.4);
+    margin-bottom: 18px;
+    position: relative;
+  }
+  .polaroid-foto{
+    width: 100%;
+    aspect-ratio: 1/1;
+    background: linear-gradient(135deg, var(--rosa), var(--morado) 60%, var(--cian));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 34px;
+  }
+  .polaroid-caption{
+    position: absolute;
+    bottom: 6px; left: 0; right: 0;
+    text-align: center;
+    font-size: 11px;
+    color: var(--tinta);
+  }
+
+  .edad{
+    font-size: clamp(90px, 26vw, 150px);
+    line-height: 0.78;
+    color: var(--rosa);
+    margin: 0;
+    -webkit-text-stroke: 2px var(--hueso);
+  }
+  h1.nombre{
+    font-size: clamp(24px, 6.5vw, 34px);
+    margin: 6px 0 22px;
+    color: var(--hueso);
+  }
+
+  .mensaje{
+    max-width: 420px;
+    font-size: 14px;
+    line-height: 1.85;
+    padding: 0 8px;
+    opacity: 0.95;
+  }
+  .mensaje + .mensaje{ margin-top: 16px; }
+
+  .firma{
+    margin-top: 22px;
+    font-size: 16px;
+    color: var(--lima);
+  }
+
+  .confeti{
+    position: absolute;
+    top: -20px;
+    opacity: 0.9;
+    animation: caer linear forwards;
+  }
+  @keyframes caer{ to{ transform: translateY(110vh) rotate(360deg); opacity: 0.15; } }
+
+  .replay{
+    margin-top: 26px;
+    background: none;
+    border: 2px solid var(--hueso);
+    color: var(--hueso);
+    padding: 10px 22px;
+    font-size: 12px;
+    font-weight: 700;
+    border-radius: 999px;
+    cursor: pointer;
+    font-family: 'Space Grotesk', sans-serif;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation: none !important; transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="escenario" id="escenario">
+
+  <!-- PANTALLA 1: ticket -->
+  <div class="pantalla activa" id="p1">
+    <div style="position:relative;">
+      <div class="washi rosa"></div>
+      <div class="ticket">
+        <span class="estrellita doodle" style="top:-18px; left:-10px; color: var(--lima); transform: rotate(-15deg);">✦</span>
+        <span class="estrellita doodle" style="bottom:-14px; right:-12px; color: var(--cian); transform: rotate(10deg);">✦</span>
+        <div class="ticket-eyebrow">ADMISIÓN </div>
+        <div class="ticket-titulo display">DIANA ARELY</div>
+        <div class="ticket-linea"></div>
+        <div class="ticket-detalle">
+          <span>PUERTAS: AHORA</span>
+          <span>ASIENTO: EL TUYO</span>
+        </div>
+      </div>
+    </div>
+    <button class="tocar" id="btnTocar">▶ TOCA PARA ENTRAR</button>
+    <p class="portada-sub doodle" style="font-size:13px;">súbele el volumen antes de abrir</p>
+  </div>
+
+  <!-- PANTALLA 2: himno / vinilo -->
+  <div class="pantalla" id="p2">
+    <div class="vinilo-wrap">
+      <span class="nota n1">🎵</span>
+      <span class="nota n2">🎶</span>
+      <div class="vinilo"><div class="vinilo-centro">SIDE A</div></div>
+    </div>
+    <h2 class="himno-titulo display">suena algo raro</h2>
+    <p class="himno-sub doodle">aguanta, ya casi...</p>
+    <div class="barra-tiempo"><div class="barra-tiempo-relleno" id="barra"></div></div>
+  </div>
+
+  <!-- PANTALLA 3: la broma -->
+  <div class="pantalla" id="p3">
+    <div class="sticker display">¡ES BROMA!</div>
+    <p class="broma-sub doodle">esto es lo que en verdad te tocaba escuchar...</p>
+  </div>
+
+  <!-- PANTALLA 4: cartel de cumpleaños -->
+  <div class="pantalla" id="p4">
+    <div class="cartel">
+      <div class="polaroid">
+        <div class="polaroid-foto">🎂</div>
+        <div class="polaroid-caption doodle">hoy es tu día</div>
+      </div>
+      <p class="edad display">21</p>
+      <h1 class="nombre display">Feliz cumpleaños,<br>Diana Arely</h1>
+      <p class="mensaje">
+        Hoy cumples 21 y la verdad es que se siente justo celebrarte: no solo
+        por llegar a esta edad, sino por la persona que eres llegando a ella.
+        Espero que este año te traiga tantas cosas buenas como las que tú
+        regalas sin darte cuenta con solo estar cerca. Que se cumplan tus
+        planes, que subas el volumen de las canciones que amas sin pena,
+        que te sorprenda algo bonito cuando menos lo esperes. Gracias por
+        ser especial de verdad, no de mentiritas como el himno de hace un rato.
+      </p>
+      <p class="mensaje">
+        Claro que me acordé que hoy es tu cumpleaños, me grabé la fecha desde
+        que te la pregunté &amp; me la dijiste. Recordé que sería tu cumpleaños
+        desde 2 meses atrás, una semana antes, dos días antes, a las 12:00 a.m.
+        &amp; también lo recordaré durante el transcurso de este día.
+      </p>
+      <p class="firma doodle">con cariño, para ti ♥</p>
+      <button class="replay" id="btnReplay">↻ escuchar otra vez</button>
+    </div>
+  </div>
+</div>
+
+<audio id="audioHimno" preload="auto" src="https://archive.org/download/himnonacionalmexicanoversionesymarchas-orgullomexicano/02%20Himno%20Nacional%20Versi%C3%B3n%20Instrumental.mp3"></audio>
+<audio id="audioMananitas" preload="auto" src="https://archive.org/download/MariachisPlayinglasMananitasInEastLosAngeles/MariachiMananitasEastLa.mp3"></audio>
+
+<script>
+  const escenario = document.getElementById('escenario');
+  const p1 = document.getElementById('p1');
+  const p2 = document.getElementById('p2');
+  const p3 = document.getElementById('p3');
+  const p4 = document.getElementById('p4');
+  const barra = document.getElementById('barra');
+  const himno = document.getElementById('audioHimno');
+  const mananitas = document.getElementById('audioMananitas');
+  const DURACION_HIMNO_MS = 10000;
+
+  function mostrar(pantalla){
+    [p1,p2,p3,p4].forEach(p => p.classList.remove('activa'));
+    pantalla.classList.add('activa');
+  }
+
+  function lanzarConfeti(){
+    const colores = ['#ff2e88','#d4ff3f','#8b5cf6','#2be0e0','#fdfaf3'];
+    for(let i=0;i<70;i++){
+      const c = document.createElement('div');
+      c.className = 'confeti';
+      c.style.left = Math.random()*100+'%';
+      const esCuadro = Math.random() > 0.5;
+      c.style.width = esCuadro ? '9px' : (5+Math.random()*5)+'px';
+      c.style.height = esCuadro ? '9px' : (8+Math.random()*8)+'px';
+      c.style.borderRadius = esCuadro ? '2px' : '50%';
+      c.style.background = colores[Math.floor(Math.random()*colores.length)];
+      c.style.animationDuration = (2.5+Math.random()*2)+'s';
+      c.style.animationDelay = (Math.random()*1.2)+'s';
+      escenario.appendChild(c);
+      setTimeout(()=>c.remove(), 6000);
+    }
+  }
+
+  function fundirAudio(audioEl, callback){
+    let vol = audioEl.volume;
+    const iv = setInterval(()=>{
+      vol -= 0.08;
+      if(vol <= 0){
+        audioEl.pause();
+        audioEl.volume = 1;
+        clearInterval(iv);
+        if(callback) callback();
+      } else {
+        audioEl.volume = vol;
+      }
+    }, 60);
+  }
+
+  function iniciarSecuencia(){
+    mananitas.play().then(()=>{ mananitas.pause(); mananitas.currentTime = 0; }).catch(()=>{});
+
+    himno.currentTime = 0;
+    himno.volume = 1;
+    himno.play().catch(()=>{});
+
+    mostrar(p2);
+    barra.style.transition = `width ${DURACION_HIMNO_MS/1000}s linear`;
+    requestAnimationFrame(()=>{ barra.style.width = '100%'; });
+
+    setTimeout(()=>{
+      fundirAudio(himno, ()=>{
+        mostrar(p3);
+        lanzarConfeti();
+        setTimeout(()=>{
+          escenario.classList.add('fiesta');
+          mananitas.currentTime = 0;
+          mananitas.play().catch(()=>{});
+          mostrar(p4);
+          lanzarConfeti();
+        }, 1800);
+      });
+    }, DURACION_HIMNO_MS);
+  }
+
+  document.getElementById('btnTocar').addEventListener('click', iniciarSecuencia);
+
+  document.getElementById('btnReplay').addEventListener('click', ()=>{
+    mananitas.pause();
+    mananitas.currentTime = 0;
+    escenario.classList.remove('fiesta');
+    barra.style.transition = 'none';
+    barra.style.width = '0%';
+    iniciarSecuencia();
+  });
+</script>
+
+</body>
+</html>
